@@ -1,32 +1,151 @@
-# Prerequisites
-*.d
+#include <iostream>
+#include <random>
+#include <Windows.h>
+#include <bitset>
+#include <iomanip>
+#include <algorithm>
+#include <ctime>
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+#define MAX 8
+#define MAX2 64
 
-# Precompiled Headers
-*.gch
-*.pch
+using namespace std;
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+void first();
+void second();
+void secondB();
+void secondC();
+void third();
 
-# Fortran module files
-*.mod
-*.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    first();
+    second();
+    secondB();
+    secondC();
+    third();
+}
+
+void first()
+{
+    cout << "First task (a) number = 255, mask = 1" << endl;
+    unsigned int x = 255;
+    unsigned int maska = 1;
+    cout << "Result before = " << x << endl;
+    x = x & (~(maska << 4));
+    cout << "Result after = " << x << endl;
+    cout << "Let's check the correctness of the result on other numbers" << endl;
+    cout << "Enter a number" << endl;
+    unsigned int y;
+    cin >> y;
+    cout << "Result before = " << y << endl;
+    y = y & (~(maska << 4));
+    cout << "Result after = " << y << endl;
+
+    cout << "-------------------------------------------------------" << endl;
+
+    cout << "First task (b)" << endl;
+    cout << "Enter a number" << endl;
+
+    cin >> x;
+    cout << "Result before = " << x << endl;
+    x = x | (maska << 6);
+    cout << "Result after = " << x << endl;
+
+    cout << "-------------------------------------------------------" << endl;
+
+    cout << "First task (c)" << endl;
+    unsigned int z = 25;
+    const int n = sizeof(int) * 8; // =32  - количество разрядов в числе типа int 
+    unsigned mask = (1 << n - 1); // 1 в старшем бите 32-разрядной сетки 
+    cout << "Начальный вид маски: " << bitset<n>(mask) << endl;
+    cout << "Результат: ";
+    for (int i = 1; i <= n; i++) //32 раза по кол-ву разрядов
+    {
+        cout << ((z & mask) >> (n - i));
+        mask = mask >> 1; // смещение 1 в маске на разряд вправо
+    }
+    cout << endl; 
+    system("pause");    
+    
+}
+void second() 
+{
+    
+    cout << "Second task (a)" << endl;
+    const unsigned int size = 8;   
+    unsigned char ARR[size] = {0, 4, 2, 7, 6, 5};
+
+    bitset<MAX + 1> bit;
+
+    for(int i=0; i<size; i++)
+    {
+        bit.set(ARR[i]);
+    }
+
+    for (int i = 0; i < MAX+1; ++i) 
+    {
+        if (bit.test(i)) 
+        {
+            cout << i << " ";
+        }
+    }
+    cout << endl;
+    
+   
+}
+void secondB() 
+{
+    cout << "Second task(b)" << endl;
+
+    const unsigned int size2 = 64;
+    unsigned long long ARR2[size2] = { 0, 34, 12, 11, 15, 16, 17, 20, 22, 33, 34, 45, 46, 47, 48, 49, 55, 10, 9 };
+   
+
+    bitset<MAX2 + 1> bit;
+
+    for (int i = 0; i < size2; i++)
+    {
+        bit.set(ARR2[i]);
+    }
+
+    for (int i = 0; i < MAX2 + 1; ++i)
+    {
+        if (bit.test(i))
+        {
+            cout << i << " ";
+        }
+    }
+    cout << endl;
+}
+void secondC()
+{
+
+}
+
+int sort(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+void third()
+{
+    double start_time = clock();
+    cout << "Third task(a)" << endl;
+
+    unsigned int ARR3[5];
+    for(int i = 0; i<5; i++)
+    {
+        cout << "[" << i + 1 << "]" << ": ";
+        cin >> ARR3[i];
+    }
+    qsort(ARR3, 5, sizeof(unsigned int), sort);
+    for(int i = 0; i<5; i++){
+        cout << ARR3[i] << " ";
+    }
+    cout << "\n";
+    double end_time = clock();
+    double search_time = end_time - start_time;
+    cout << "Time = " << search_time << " milliseconds";
+}
